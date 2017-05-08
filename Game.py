@@ -29,7 +29,7 @@ class Game:
         
         s.missileSound.set_volume(0.5)
         s.explosionSound.set_volume(0.5)
-        s.music.set_volume(0)
+        s.music.set_volume(0.7)
         s.Reset()
         s.time = 1
 
