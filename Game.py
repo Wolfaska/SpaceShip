@@ -3,7 +3,7 @@ from pygame.locals import *
 import sys, os
 from random import randint
 from Functions import *
-from Classes import *
+from Class import *
 from Animation import *
 from Items import *
 from math import log
