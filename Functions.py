@@ -2,26 +2,26 @@ import pygame
 from pygame.locals import *
 import sys, os
 
-def GetControlersData(cData):
+def GetControlersData(cData): #définition des boutons que le joueur va utiliser pour jouer au jeu
 
     for event in pygame.event.get():
-
+#déplacement de la souris sur l'écran
         if event.type == MOUSEMOTION:
             cData['MOUSEX'] = event.pos[0]
             cData['MOUSEY'] = event.pos[1]
-
+#évènement lorsque le joueur clique sur la souris
         elif event.type == MOUSEBUTTONDOWN:
             if event.button == 1:
                 cData['LEFTBUTTON'] = True
             elif event.button  == 3:
                 cData['RIGHTBUTTON'] = True
-                
+#évènement lorsque le joueur ne clique PAS sur la souris                
         elif event.type == MOUSEBUTTONUP:
             if event.button == 1:
                 cData['LEFTBUTTON'] = False
             elif event.button  == 3:
                 cData['RIGHTBUTTON'] = False
-                
+#évènement lorsque le joueur appuie sur une touche de clavier                
         elif event.type == KEYDOWN:
             if event.key == K_w:
                 cData["Z"] = True
@@ -38,7 +38,7 @@ def GetControlersData(cData):
             elif event.key == K_RETURN:
                 cData ['ENTER'] = True
             
-            
+#évènement lorsque le joueur n'appuie PAS sur une touche de clavier            
         elif event.type == KEYUP:
             if event.key == K_w:
                 cData["Z"] = False

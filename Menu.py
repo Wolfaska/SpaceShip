@@ -7,7 +7,7 @@ from Functions import *
 class MainMenu:
 
     def __init__(s):
-        
+        #créer les images des boutons du menu
         s.buttonLevelHell = Button(LoadImage('levelHell.png', True, 0, 0, 144, 167), LoadImage('levelHell.png', True, 144, 0, 144, 167), pygame.display.Info().current_w/4, pygame.display.Info().current_h/1.5)
         s.buttonLevelAsteroid = Button(LoadImage('levelAsteroid.png', True, 0, 0, 144, 167), LoadImage('levelAsteroid.png', True, 144, 0, 144, 167), pygame.display.Info().current_w/4, pygame.display.Info().current_h/4) 
         s.background = LoadImage('space.png')
@@ -25,13 +25,13 @@ class MainMenu:
             screen.blit (s.spaceShipImage, (pygame.display.Info().current_w/3.2, 50*pygame.display.Info().current_h/1440))
 
             GetControlersData(cData)
-
+# créer la possibilité d'intéragir avec les boutons
             s.buttonLevelHell.update(screen, cData)
             s.buttonLevelAsteroid.update(screen, cData)
             s.buttonLevelMissile.update(screen, cData)
             s.buttonLevelLaserShip.update(screen, cData)
             s.buttonPlay.update(screen, cData)
-            
+ #lance les niveaux en fonction de là où on l'a cliqué           
             if s.buttonLevelHell.clicked == True:
                 game.time = 180000001
                 return ['GameReset']
@@ -82,7 +82,7 @@ class PauseMenu:
 
 class GameOver:
     
-    def __init__(s):
+    def __init__(s):#créer les boutons du menu game over
         s.buttonTryAgain = Button(LoadImage('buttonTryAgain.png', True, 0, 0, 690, 140), LoadImage('buttonTryAgain.png', True, 690, 0, 690, 140), pygame.display.Info().current_w/3, pygame.display.Info().current_h/2)
         s.buttonMainMenu = Button(LoadImage('buttonMainMenu.png', True, 0, 0, 800, 110), LoadImage('buttonMainMenu.png', True, 800, 0, 800, 110), s.buttonTryAgain.rect.x, s.buttonTryAgain.rect.y + s.buttonTryAgain.rect.h + 50*pygame.display.Info().current_h/1440)
         s.buttonLeaveGame = Button(LoadImage('buttonLeaveGame.png', True, 0, 0, 900, 140), LoadImage('buttonLeaveGame.png', True, 900, 0, 900, 140), s.buttonTryAgain.rect.x, s.buttonMainMenu.rect.y + s.buttonMainMenu.rect.h + 50*pygame.display.Info().current_h/1440)
@@ -90,8 +90,9 @@ class GameOver:
         
 
     def Run(s, screen, cData, font, score, time):
-
-            #lecture du meilleur score
+#affiche le meilleur score en fonction du niveau choisi
+        
+           
             if time < 60000000 :
                 with open("scoreAsteroid.txt", "r") as fichier:
                     bestScore = round(float(fichier.read()))
@@ -140,6 +141,7 @@ class GameOver:
                 gameOver = font.render("GAME OVER", True, (255,0,0))
                 gameOver_rect = gameOver.get_rect(midbottom=(pygame.display.Info().current_w/2, pygame.display.Info().current_h/3))
                 screen.blit(gameOver, gameOver_rect)
+                # affiche le nom du niveau qui sera  a coté du bestscore
                 
                 if time < 60000000 :
                    levelName = 'ASTEROID MODE'
@@ -151,21 +153,21 @@ class GameOver:
                     levelName = 'HELL MODE'
                 elif time > 200000000 :
                     levelName = 'NORMAL MODE'
-                
+                #affiche le best score en fonction du niveau
                 bestScore_font = font.render("Best score {}: {}".format(levelName, bestScore), True, (255,255,255))
                 bestScore_font_rect = bestScore_font.get_rect(midtop=(pygame.display.Info().current_w/2, pygame.display.Info().current_h/3))
                 screen.blit(bestScore_font, bestScore_font_rect)
-                
+                #affiche le score du joueur
                 score_font = font.render("your score: {}".format(round(score)), True, (255,255,255))
                 score_font_rect = score_font.get_rect(midtop=(pygame.display.Info().current_w/2, bestScore_font_rect.y + (bestScore_font_rect.h)))
                 screen.blit(score_font, score_font_rect)
 
                 GetControlersData(cData)
-
+#permet d'intéragir avec les boutons du menu game over
                 s.buttonTryAgain.update(screen, cData)
                 s.buttonMainMenu.update(screen, cData)
                 s.buttonLeaveGame.update(screen, cData)
-
+#retourne sur un menu ou recommence la partie, en fonction du bouton choisi
                 if s.buttonTryAgain.clicked:
                     return ['GameReset']
                 elif s.buttonMainMenu.clicked:

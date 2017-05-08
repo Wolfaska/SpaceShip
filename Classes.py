@@ -13,27 +13,28 @@ class Ship(pygame.sprite.Sprite):
     def __init__(s, posX, posY, animationImage, imageHeart, missileItemImage):
         
         pygame.sprite.Sprite.__init__(s) #appel du constructeur de pygame.sprite.Sprite
-        s.anim = Animation(animationImage, 0 ,0, 132, 50, 4, 300)
+        s.anim = Animation(animationImage, 0 ,0, 132, 50, 4, 300)#animation du vaisseau
         s.rect = s.anim.get_rect()
         s.rect.move_ip(posX, posY)
         s.life = 3
+        #affichage des coeurs
         s.heart = imageHeart.subsurface(0, 0, 50*pygame.display.Info().current_w/2560, 50*pygame.display.Info().current_h/1440)
         s.shieldHeart = imageHeart.subsurface(50*pygame.display.Info().current_w/2560, 0,50*pygame.display.Info().current_w/2560, 50*pygame.display.Info().current_h/1440)
         s.heartRect = s.heart.get_rect()
         s.invulnerabilityTime = 0
-        s.ammunition = 0
-        s.missileItemImage = missileItemImage
+        s.ammunition = 0 #munition du vaisseau
+        s.missileItemImage = missileItemImage #l'image de l'item missile a coté du nombre de munition
         s.missileItemImageRect = s.missileItemImage.get_rect()
 
         s.shieldActivated = False
         s.nuclearMissileActivated = False
 
     def Hit(s):
-
+#le vaisseau clignote si il prend un coup, avec ou sans bouclier
         if s.shieldActivated:
             s.shieldActivated = False
             s.invulnerabilityTime = 1500
-             
+#il perd une vie si il n'a pas de bouclier             
         if s.invulnerabilityTime < 0:
             s.life -= 1
             s.invulnerabilityTime = 1500
@@ -45,12 +46,13 @@ class Ship(pygame.sprite.Sprite):
         #gestion des deplacements du vaiseau:
         x = 0.8*(cData["D"] - cData["Q"])*deltaTime# True = 1, False = 0 
         y = 0.8*(cData["S"] - cData["Z"])*deltaTime
+        #le vaisseau ne peut pas sortir de l'écran , son abcisse et son ordonnée ne bouge pas aux limites de l'écran
         if (s.rect.x + s.rect.w >= pygame.display.Info().current_w  and cData["D"]) or (s.rect.x <= 0 and cData["Q"]):
             x = 0
         if (s.rect.y + s.rect.h >= pygame.display.Info().current_h and cData["S"]) or (s.rect.y <=0 and cData["Z"]):
             y = 0
         s.rect.move_ip(x, y)
-
+#affichage du clignotement du vaisseau si il prend un coup
         s.anim.time += deltaTime
         if s.invulnerabilityTime > 0 and s.invulnerabilityTime%200 > 100:
             pass
@@ -71,15 +73,15 @@ class Missile(pygame.sprite.Sprite):
     def __init__(s, posX, posY, animationImage): 
             
         pygame.sprite.Sprite.__init__(s)#appel du constructeur de pygame.sprite.Sprite
-        s.anim = Animation(animationImage, 0, 50, 85, 20, 2, 100)
+        s.anim = Animation(animationImage, 0, 50, 85, 20, 2, 100)#animation du missile
         s.rect = s.anim.get_rect()
         s.rect.move_ip(posX, posY)
         
         
     def update(s, screen, deltaTime):
         if s.rect.x >= pygame.display.Info().current_w:
-            s.kill()
-        s.rect.move_ip(1.1*deltaTime,0)
+            s.kill()#le missile est détruit si il quitte l'écran
+        s.rect.move_ip(1.1*deltaTime,0)#déplacement de l'astéroide
         s.anim.update(screen, deltaTime, s.rect)
 
 class Enemy(pygame.sprite.Sprite):
@@ -90,15 +92,15 @@ class Enemy(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(s) #appel du constructeur de pygame.sprite.Sprite
         s.image = enemeyShipImage
         s.rect = s.image.get_rect()
-        s.rect.move_ip(pygame.display.Info().current_w, randint(0,pygame.display.Info().current_h -s.rect.h))#choisit une position aleatoire de l'aseroide sur l'axe des y
-        s.rotation = randint(5, 30)
-        s.velocity = randint(1, 2)
+        s.rect.move_ip(pygame.display.Info().current_w, randint(0,pygame.display.Info().current_h -s.rect.h))#l'astéroide apparait au hasard a droite en dehors de l'écran
+        s.rotation = randint(5, 30) #l'image de l'asteroide tourne pour faire un effet d'animation
+        s.velocity = randint(1, 2)#créer les différentes vitesse des astéroides de façon aléatoire
 
     def update(s, screen, deltaTime):
         if s.rect.x + s.rect.w <= 0:
-            s.kill()
+            s.kill()#l'asteroide est détruit si il sort de l'écran
         pygame.transform.rotate(s.image, s.rotation)
-        s.rect.move_ip(-s.velocity*0.7*deltaTime, 0)
+        s.rect.move_ip(-s.velocity*0.7*deltaTime, 0)#déplacement de l'asteroide
         screen.blit(s.image, s.rect)
 
 class Background:
@@ -148,15 +150,16 @@ class EnemyMissile(pygame.sprite.Sprite):
     def __init__(s, animationImage):
 
         pygame.sprite.Sprite.__init__(s)
-        s.anim = Animation(animationImage, 0, 170 , 85, 20, 2, 100)
+        s.anim = Animation(animationImage, 0, 170 , 85, 20, 2, 100)#créer l'animation du missile ennemi
         s.rect = s.anim.get_rect()
-        s.rect.move_ip(-s.rect.w, randint(0, pygame.display.Info().current_h) - s.rect.h)
+        s.rect.move_ip(-s.rect.w, randint(0, pygame.display.Info().current_h) - s.rect.h)#le missile ennemi est créer a gauche en dehors de l'écran
 
     def update(s, screen, deltaTime, ship): #met a jour la durée de vie et la position du missile ennemi
         
         if s.rect.w > pygame.display.Info().current_w:
             s.kill() #détruit le missile quand il sort de l'écran
         y = 0
+        #le missile ennemi se déplace en fonction de l'ordonnée du vaisseau
         if s.rect.x - ship.rect.x < 350 and (ship.rect.y - s.rect.y < 350 or ship.rect.y - s.rect.y > -350):
             if s.rect.y < ship.rect.y:
                 y = 0.4*deltaTime
@@ -179,7 +182,7 @@ class  Shield(pygame.sprite.Sprite):
     def update(s, screen, ship, shieldImage):
 
         if ship.shieldActivated:
-            
+            #apparition du bouclier en fonction de la position du vaisseau
             s.rect.x = ship.rect.x - 8
             s.rect.y = ship.rect.y - 8
             screen.blit(shieldImage,s.rect)
@@ -273,21 +276,21 @@ class NuclearMissile(pygame.sprite.Sprite):
     def __init__(s, posX, posY, animationImage): 
             
         pygame.sprite.Sprite.__init__(s)
-        s.anim = Animation(animationImage, 520, 110, 152, 35, 4, 200)
+        s.anim = Animation(animationImage, 520, 110, 152, 35, 4, 200)#créer l'animation du missile nucléaire
         s.rect = s.anim.get_rect()
-        s.lifeTime = 200
-        s.whiteScreenTime = 100
+        s.lifeTime = 200#temps de vie du missile nucléaire avant qu'il n'explose une fois lancée
+        s.whiteScreenTime = 100 #durée du clignotement de l'écran une fois que le missile nucléaire explose
         s.spawned = False
         s.cooldown = 0
         
     def Spawn(s, rect):
-
+#donne les coordonées du missile nucléaire une fois qu'il apparaît
         s.spawned = True
         s.rect.x = rect.x
         s.rect.y = rect.y 
         
     def update(s, screen, deltaTime):
-
+#fait cligoter l'écran lorsque le coolodwn(1000)%100 est supérieur a 90
         s.cooldown -= deltaTime
         if s.cooldown > 600 and s.cooldown%100 > 90:
             screen.fill((255,255,255))
@@ -295,7 +298,7 @@ class NuclearMissile(pygame.sprite.Sprite):
             s.lifeTime -= deltaTime
             if s.lifeTime <= 0:
                 s.spawned = False
-            s.rect.move_ip(1.1*deltaTime, 0)
+            s.rect.move_ip(1.1*deltaTime, 0)#déplacement du missile nucléaire
             s.anim.update(screen, deltaTime, s.rect)
 
         
