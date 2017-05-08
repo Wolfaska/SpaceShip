@@ -250,9 +250,9 @@ class LaserShip(pygame.sprite.Sprite):
                     s.beamLoading.update(screen, 0, (s.rect.x-(i+1)*s.beamRect.w + 35*X, s.beamRect.y))
         else:
             if s.rect.x > pygame.display.Info().current_w*s.Xmax:
-                if s.rect.y < ship.rect.y - 100*Y:
+                if s.rect.y < ship.rect.y - 10*Y:
                     y = 0.5*deltaTime
-                elif s.rect.y > ship.rect.y + 100*Y:
+                elif s.rect.y > ship.rect.y + 10*Y:
                     y = -0.5*deltaTime
                 else:
                     s.fireing = True
