@@ -12,6 +12,8 @@ class Game:
 
     def __init__(s):
 
+        
+        #chargement des ressources du jeu
         s.animationImage = LoadImage('animations.png', True)
         s.missileItemImage = LoadImage('missileItem.png', True)
         s.enemeyShipImage = LoadImage('meteorite.png', True)
@@ -65,7 +67,8 @@ class Game:
         pygame.mouse.set_visible(0)
         pygame.mixer.unpause()
         timer.tick()
-        
+
+        #lecture du ficher correspondant au meilleur score du niveau sélectionné 
         while True:
             if s.time < 60000000 :
                 with open("scoreAsteroid.txt", "r") as fichier:
@@ -82,9 +85,8 @@ class Game:
             elif s.time > 200000000 :
                 with open("score.txt", "r") as fichier:
                     s.bestScore = round(float(fichier.read()))
-                
-        
-            deltaTime = timer.tick()
+
+            deltaTime = timer.tick() #récuperation du temps écoulé depuis le dernier appel de timer.tick()
             s.score += deltaTime/10
             s.time += deltaTime
 
@@ -261,12 +263,14 @@ class Game:
 
             screen.blit(bestScore_font, (0, (s.ship.heartRect.h)*2))
 
+            #teste si il reste de la vie au vaisseau, si non on redirige vers le menu game over
             if s.ship.life <= 0:
                 pygame.time.delay(2000)
                 pygame.mouse.set_visible(1)
                 s.music.stop()
                 return ['GameOverScreen', s.score ,s.time]
 
+            #redirection vers le menu pause
             if cData['ESCAPE']:
                 pygame.mixer.pause()
                 return ['Pause']

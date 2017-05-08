@@ -55,22 +55,22 @@ def GetControlersData(cData): #définition des boutons que le joueur va utiliser
             elif event.key == K_RETURN:
                 cData ['ENTER'] = False    
 
-def LoadImage(imageName, alpha=False, posX = 0, posY = 0, w = 0, h = 0):#définition du chargement des images
+def LoadImage(imageName, alpha=False, posX = 0, posY = 0, w = 0, h = 0):#permet de chager les images du jeu
     
     try:
-        X = pygame.display.Info().current_w/2560
+        X = pygame.display.Info().current_w/2560# variable permettant d'adapter l'image en fonction de l'écran
         Y = pygame.display.Info().current_h/1440
 
         if alpha:
-            image=pygame.image.load(os.path.join('data',imageName)).convert_alpha()
+            image=pygame.image.load(os.path.join('data',imageName)).convert_alpha()#permet de reduire le temps d'affichage de l'image
         else:
-            image=pygame.image.load(os.path.join('data',imageName)).convert()
+            image=pygame.image.load(os.path.join('data',imageName)).convert()#permet de reduire le temps d'affichage de l'image
 
         imageRect = image.get_rect()    
 
         if (w and h) != 0:
-            image1 = image.subsurface((posX, posY, w, h))
-            image = pygame.transform.scale(image1, (round(imageRect.w*X/2), round(imageRect.h*Y)))
+            image1 = image.subsurface((posX, posY, w, h))# permet de ne prendre qu'une seule région de l'image
+            image = pygame.transform.scale(image1, (round(imageRect.w*X/2), round(imageRect.h*Y)))#redimentionnement de l'image en fonction de l'écran
             
             return image
             

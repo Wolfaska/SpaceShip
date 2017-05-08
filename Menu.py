@@ -25,13 +25,14 @@ class MainMenu:
             screen.blit (s.spaceShipImage, (pygame.display.Info().current_w/3.2, 50*pygame.display.Info().current_h/1440))
 
             GetControlersData(cData)
-# créer la possibilité d'intéragir avec les boutons
+            # créer la possibilité d'intéragir avec les boutons
             s.buttonLevelHell.update(screen, cData)
             s.buttonLevelAsteroid.update(screen, cData)
             s.buttonLevelMissile.update(screen, cData)
             s.buttonLevelLaserShip.update(screen, cData)
             s.buttonPlay.update(screen, cData)
- #lance les niveaux en fonction de là où on l'a cliqué           
+            
+             #lance les niveaux en fonction de là où on l'a cliqué           
             if s.buttonLevelHell.clicked == True:
                 game.time = 180000001
                 return ['GameReset']
@@ -53,7 +54,7 @@ class MainMenu:
     
 class PauseMenu:
 
-    def __init__(s):
+    def __init__(s):#charge les bouttons du menu et les images 
         button = LoadImage('buttonResume.png', True)
         s.buttonResume = Button(button, LoadImage('buttonResumeClicked.png', True), pygame.display.Info().current_w/2 - (button.get_width()/2), pygame.display.Info().current_h/2 - (button.get_height()/2))
         s.buttonMainMenu = Button(LoadImage('buttonMainMenu.png', True, 0, 0, 800, 110), LoadImage('buttonMainMenu.png', True, 800, 0, 800, 110), s.buttonResume.rect.x , s.buttonResume.rect.y + s.buttonResume.rect.h + 50*pygame.display.Info().current_h/1440)
@@ -66,12 +67,13 @@ class PauseMenu:
         
         while True:
 
-            GetControlersData(cData)
+            GetControlersData(cData) # récupere les informations des controleurs
 
             s.buttonResume.update(screen, cData)
             s.buttonMainMenu.update(screen, cData)
             s.buttonLeaveGame.update(screen, cData)
 
+            #teste si les boutons on été cliqué
             if s.buttonResume.clicked:
                 return ['Game']
             elif s.buttonMainMenu.clicked:
@@ -163,11 +165,12 @@ class GameOver:
                 screen.blit(score_font, score_font_rect)
 
                 GetControlersData(cData)
-#permet d'intéragir avec les boutons du menu game over
+                #permet d'intéragir avec les boutons du menu game over
                 s.buttonTryAgain.update(screen, cData)
                 s.buttonMainMenu.update(screen, cData)
                 s.buttonLeaveGame.update(screen, cData)
-#retourne sur un menu ou recommence la partie, en fonction du bouton choisi
+                
+                #retourne sur un menu ou recommence la partie, en fonction du bouton choisi
                 if s.buttonTryAgain.clicked:
                     return ['GameReset']
                 elif s.buttonMainMenu.clicked:

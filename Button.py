@@ -6,8 +6,8 @@ class Button(pygame.sprite.Sprite):
     def __init__(s, buttonState1, buttonState2, posX, posY):
         
         pygame.sprite.Sprite.__init__(s)
-        s.buttonState1 = buttonState1
-        s.buttonState2 = buttonState2
+        s.buttonState1 = buttonState1#état normal du bouton
+        s.buttonState2 = buttonState2# état du bouton quand la souris le survole
         
 
         s.rect = s.buttonState1.get_rect()
@@ -15,7 +15,7 @@ class Button(pygame.sprite.Sprite):
 
         s.clicked = False
 
-    def update(s, screen, cData):
+    def update(s, screen, cData): # teste si le bouton a éte cliqué et si il est survolé par la souris
 
         if cData['MOUSEX'] >= s.rect.x and cData['MOUSEX'] <= s.rect.x + s.rect.w and cData['MOUSEY'] >= s.rect.y and cData['MOUSEY'] <= s.rect.y + s.rect.h and cData['LEFTBUTTON']:
             s.clicked = True

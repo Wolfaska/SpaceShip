@@ -39,20 +39,21 @@ mainMenu = MainMenu()
 pauseMenu = PauseMenu()
 gameOver = GameOver()
 
-scene = ['MainMenu']
-while scene[0] != 'Quit':
+#permet de passer d'un menu a l'autre
+menu = ['MainMenu']
+while menu[0] != 'Quit':
 
-    if scene[0] == 'MainMenu':
-        scene = mainMenu.Run(screen, cData, game)
-    elif scene[0] == 'Game' :
-        scene = game.Run(screen, timer, cData, font)
-    elif scene[0] == 'GameReset':
+    if menu[0] == 'MainMenu':
+        menu = mainMenu.Run(screen, cData, game)
+    elif menu[0] == 'Game' :
+        menu = game.Run(screen, timer, cData, font)
+    elif menu[0] == 'GameReset':
         game.Reset()
-        scene = game.Run(screen, timer, cData, font)
-    elif scene[0] == 'GameOverScreen':
-        scene = gameOver.Run(screen, cData, font, scene[1], scene[2])
-    elif scene[0] == 'Pause':
-        scene = pauseMenu.Run(screen, cData)
+        menu = game.Run(screen, timer, cData, font)
+    elif menu[0] == 'GameOverScreen':
+        menu = gameOver.Run(screen, cData, font, menu[1], menu[2])
+    elif menu[0] == 'Pause':
+        menu = pauseMenu.Run(screen, cData)
     
     
 pygame.quit()
